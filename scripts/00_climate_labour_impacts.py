@@ -1,17 +1,17 @@
 import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
-import scipy.stats
+# import scipy.stats
 from matplotlib.lines import Line2D
 import pandas as pd
+import pickle
 
 # We use Dasgupta et al. 2021
 # https://www.thelancet.com/journals/lanplh/article/PIIS2542-5196(21)00170-4/fulltext
-# Before, used data from their supp tables. But don't trust this - it 
-# doesnt match their plots. So here, take the 0, 25, 50, 75, 100 %iles
-# traced from their graphs.
-# However, this seems to be the spread between gridpoints - so we can't
-# use this for uncertainties in the global response.
+# Supplementary table data doesn't seem to match the plots, so we trace the 
+# graphs. The uncertainty seems to be the spread between gridpoints - so we can't
+# use this for uncertainties in the global response. So for now, we just 
+# provide the median by default - though the data is here for the others.
 
 figdir = '../figures'
 datadir = '../data'
@@ -74,8 +74,16 @@ plt.xlabel('GMST cf pre-industrial')
 plt.ylabel('Labour Response cf pre-industrial')
 
 plt.tight_layout()
-plt.savefig(f'{figdir}/dasgupta_traced_median_only.png', dpi=300)
+# plt.savefig(f'{figdir}/dasgupta_traced_median_only.png', dpi=300)
 # plt.clf()
+
+#%%
+
+
+with open(f'{datadir}/outputs/params.pickle', 'wb') as handle:
+    pickle.dump(params, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+
 
 #%%
 
